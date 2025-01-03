@@ -1,3 +1,7 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+.map-container {
+	@apply flex flex-1 h-full w-full rounded-lg p-2 border-2 border-violet-300 justify-center p-4;
+}
