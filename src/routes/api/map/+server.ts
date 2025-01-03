@@ -1,29 +1,18 @@
-import { json, type RequestHandler } from '@sveltejs/kit';
+import { type RequestHandler } from '@sveltejs/kit';
 import { GOOGLE_API_KEY } from '$env/static/private';
-import { MARC_STATIONS, PENN_LINE } from '$lib/utils/map-data';
 
+const GOOGLE_MAPS_API_URL = 'https://maps.googleapis.com/maps/api/js';
 
 export const GET: RequestHandler = async () => {
-    const stations: any[] = [];
-    
-    // flatten the marc_stations array
-    MARC_STATIONS.forEach(line => {
-        line.stations.forEach(station => {
-            stations.push({
-                name: station.name,
-                lat: station.lat,
-                lng: station.lng,
-                line: line.line
-            });
-        });
-    });
+ console.log(GOOGLE_API_KEY)
+    const url = `${GOOGLE_MAPS_API_URL}?key=${GOOGLE_API_KEY}&loading=async&libraries=places`;
+    console.log(url)
+    const response = await fetch(url);
+    const script = await response.text();
 
-    return json({
-        status: 200,
-        body: {
-            stations: stations,
-            pennLine: PENN_LINE,
-            googleApiKey: GOOGLE_API_KEY
+    return new Response(script, {
+        headers: {
+            'Content-Type': 'application/javascript'
         }
     });
 };
